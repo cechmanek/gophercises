@@ -3,9 +3,9 @@ package main
 import (
 	"encoding/csv"
 	"flag"
+	"fmt"
 	"os"
 	"strings"
-	"fmt"
 	"time"
 )
 
