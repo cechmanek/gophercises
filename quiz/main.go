@@ -6,12 +6,14 @@ import (
 	"os"
 	"strings"
 	"fmt"
+	"time"
 )
 
 func main() {
 	// generic helper flags so you can pass args like "quiz.exe -csv problems.csv"
 	csvFilename := flag.String("csv", "problems.csv",
 														 "a csv file in th format of 'question,answer'")
+	timeLimit := flag.Int("limit", 5, "time limit for the quiz in seconds")
 	flag.Parse()
 
 	file, err := os.Open(*csvFilename) // csvFilename is a pointer
@@ -30,16 +32,29 @@ func main() {
 	problems := parseLines(lines)	
 	fmt.Println(problems)
 
+	timer := time.NewTimer(time.Duration(*timeLimit) * time.Second)
+
 	// enumerate problems and ask user for answers. Also track correct responses
 	correct := 0
 	for i, problem := range problems {
 		fmt.Printf("problem # %d:, %s = \n", i+1, problem.question)
-		var answer string
-		fmt.Scanf("%s\n", &answer) // gets rid of all spaces, read stdin into answer
 
-		if answer == problem.answer {
-			fmt.Print("correct!\n")
-			correct ++
+		answerChannel := make(chan string)
+		go func(){
+			var answer string
+			fmt.Scanf("%s\n", &answer) // strip white space, read stdin into answer
+			answerChannel <- answer
+		}()
+
+		select {
+		case <-timer.C:
+			fmt.Printf("time is up, you scored %d out of %d", correct, len(problems))
+			return // exit main() function, ending program
+		case answer := <-answerChannel:
+			if answer == problem.answer {
+				fmt.Print("correct!\n")
+				correct ++
+			}
 		}
 	}
 
