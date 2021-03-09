@@ -3,8 +3,8 @@ package main
 import (
 "fmt"
 "net/http"
-"urlshort"
-//urlshort "../urlshort"//"github.com/pohercies/urlshort"
+//"urlshort"
+"github.com/gophercises/urlshort"
 
 )
 
