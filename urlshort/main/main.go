@@ -3,9 +3,8 @@ package main
 import (
 "fmt"
 "net/http"
-//"urlshort"
-"github.com/gophercises/urlshort"
-
+"urlshort"
+//"github.com/gophercises/urlshort"
 )
 
 func main() {
@@ -16,7 +15,7 @@ func main() {
 		"/urlshort-godoc": "https://godoc.org/github.com/gophercises/urlshort",
 		"/yaml-godoc": "https://godoc.org/gopkg.in/yaml.v2",
 	} 
-	mapHandler := urlshort.MaptHandler(pathsToUrls, mux)
+	mapHandler := urlshort.MapHandler(pathsToUrls, mux)
 
 	//built the YAMLHandler using the mapHandler as the fallback
 	// back ticks are like triple quoted strings in python
@@ -26,7 +25,7 @@ func main() {
 	- path: /urlshort-final
 	url: https://github.com/gophercises/urlshort/tree/final
 	`
-	yamlHanlder, err := urlshort.YAMLHandler([]byte(yaml), mapHandler)
+	yamlHandler, err := urlshort.YAMLHandler([]byte(yaml), mapHandler)
 	if err != nil {
 		panic(err)
 	}
