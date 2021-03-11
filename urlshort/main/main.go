@@ -20,11 +20,11 @@ func main() {
 	//built the YAMLHandler using the mapHandler as the fallback
 	// back ticks are like triple quoted strings in python
 	yaml := `
-	- path: /urlshort
-	url: https://github.com/gophercises.urlshort
-	- path: /urlshort-final
-	url: https://github.com/gophercises/urlshort/tree/final
-	`
+- path: /urlshort
+  url: https://github.com/gophercises.urlshort
+- path: /urlshort-final
+  url: https://github.com/gophercises/urlshort/tree/solution
+`
 	yamlHandler, err := urlshort.YAMLHandler([]byte(yaml), mapHandler)
 	if err != nil {
 		panic(err)
